@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class GetPathDFS {
     public static void main(String[] args){
@@ -22,18 +20,12 @@ public class GetPathDFS {
 
         int start = in.nextInt();
         int end = in.nextInt();
-        List<Integer> path = new ArrayList<>();
-        DFS(edges, n, start, end, path);
-        if (path.contains(end)){
-            for (int i = path.size()-1; i >=0; i--){
-                System.out.print(path.get(i) + " ");
-            }
-        }
+        Map<Integer, Integer> pathMap = new HashMap<>();
+        DFS(edges, n, start, end, pathMap);
     }
 
-    public static boolean printDFS(int[][] edges, int n, boolean[] visited, int start, int end, boolean flag, List<Integer> path){
+    public static boolean printDFS(int[][] edges, int n, boolean[] visited, int start, int end, boolean flag, Map<Integer, Integer> pathMap){
         if (!flag) {
-            path.add(start);
             if (start == end) {
                 flag = true;
                 return flag;
@@ -47,23 +39,35 @@ public class GetPathDFS {
                     if (visited[i])
                         continue;
                     if (i == end) {
-                        path.add(i);
+                        pathMap.put(i, start);
                         flag = true;
                         return flag;
                     } else {
-                        flag = printDFS(edges, n, visited, i, end, flag, path);
+                        pathMap.put(i, start);
+                        flag = printDFS(edges, n, visited, i, end, flag, pathMap);
                     }
                 }
             }
         }
-        return true;
+        return flag;
     }
 
-    public static void DFS(int[][] edges, int n, int start, int end, List<Integer> path){
+    public static void DFS(int[][] edges, int n, int start, int end, Map<Integer, Integer> pathMap){
         boolean[] visited = new boolean[n];
         for (int i = 0; i < n; i++){
             visited[i] = false;
         }
-        printDFS(edges, n, visited, start, end, false, path);
+        boolean hasPath = printDFS(edges, n, visited, start, end, false, pathMap);
+        if(hasPath){
+            traverseMap(end, start, pathMap);
+        }
+    }
+
+    public static void traverseMap(int i, int start, Map<Integer, Integer> pathMap){
+        System.out.print(i + " ");
+        if (i == start)
+            return;
+        int node = pathMap.get(i);
+        traverseMap(node, start, pathMap);
     }
 }
