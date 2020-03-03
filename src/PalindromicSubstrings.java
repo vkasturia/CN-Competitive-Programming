@@ -13,7 +13,6 @@ public class PalindromicSubstrings {
             int l = i;
             int r = i;
             while (l >= 0 && r < n && s.charAt(l) == s.charAt(r)){
-                int curr_l = r-l+1;
                 x++;
                 l--;
                 r++;
@@ -21,7 +20,6 @@ public class PalindromicSubstrings {
             l = i;
             r = i+1;
             while (l >= 0 && r < n && s.charAt(l) == s.charAt(r)){
-                int curr_l = r-l+1;
                 x++;
                 l--;
                 r++;
